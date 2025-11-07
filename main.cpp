@@ -61,7 +61,7 @@ int main() {
         }
     });
 
-    cout << "🚀 Server running at http://localhost:8080\n";
+    cout << "Server running at http://localhost:8080\n";
     svr.listen("localhost", 8080);
 
     db.close();
