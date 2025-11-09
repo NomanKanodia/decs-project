@@ -42,7 +42,7 @@ int main() {
         string value = db.get(key);
         if (value.empty()) {
             res.status = 404;
-            res.set_content("❌ Key not found\n", "text/plain");
+            res.set_content("Key not found\n", "text/plain");
         } else {
             cache.put(key, value);
             res.set_content("DB hit: " + value + "\n", "text/plain");
