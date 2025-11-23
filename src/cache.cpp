@@ -6,27 +6,33 @@ LRUCache::LRUCache(size_t cap) : capacity(cap) {}
 
 string LRUCache::get(const string &key) {
     lock_guard<mutex> lock(mtx);
-    if (cacheMap.find(key) == cacheMap.end()) return "";
 
-    moveToFront(key);
-    return cacheList.front().second;
-}
-
-void LRUCache::remove(const string& key) {
     auto it = cacheMap.find(key);
-    if (it != cacheMap.end()) {
-        cacheList.erase(it->second);  
-        cacheMap.erase(it);           
-    } 
-}
+    if (it == cacheMap.end()) return "";
 
+    auto node_it = it->second;
+    auto kv = *node_it;
+
+    cacheList.erase(node_it);
+    cacheList.push_front(kv);
+    cacheMap[key] = cacheList.begin();
+
+    return kv.second;
+}
 
 void LRUCache::put(const string &key, const string &value) {
     lock_guard<mutex> lock(mtx);
 
-    if (cacheMap.find(key) != cacheMap.end()) {
-        cacheMap[key]->second = value;
-        moveToFront(key);
+    auto it = cacheMap.find(key);
+    if (it != cacheMap.end()) {
+        it->second->second = value;
+
+        auto node_it = it->second;
+        auto kv = *node_it;
+
+        cacheList.erase(node_it);
+        cacheList.push_front(kv);
+        cacheMap[key] = cacheList.begin();
         return;
     }
 
@@ -45,10 +51,11 @@ bool LRUCache::exists(const string &key) {
     return cacheMap.find(key) != cacheMap.end();
 }
 
-void LRUCache::moveToFront(const string &key) {
-    auto it = cacheMap[key];
-    auto kv = *it;
-    cacheList.erase(it);
-    cacheList.push_front(kv);
-    cacheMap[key] = cacheList.begin();
+void LRUCache::remove(const string& key) {
+    lock_guard<mutex> lock(mtx);
+    auto it = cacheMap.find(key);
+    if (it != cacheMap.end()) {
+        cacheList.erase(it->second);
+        cacheMap.erase(it);
+    }
 }

@@ -1,34 +1,44 @@
 #define _WIN32_WINNT 0x0A00
 #include "include/httplib.h"
-#include "include/db.hpp"
+#include "include/db_connection_pool.hpp"
 #include "include/cache.hpp"
 #include <iostream>
+#include <memory>
 
 using namespace std;
 using namespace httplib;
 
 int main() {
-    Database db("host=localhost port=5432 dbname=mydb user=postgres password=nk123456");
-    if (!db.connect()) {
-        cerr << "Failed to connect to database.\n";
-        return 1;
-    }
 
-    LRUCache cache(5);
-
+    DatabaseConnectionPool db_pool("host=localhost port=5432 dbname=mydb user=postgres password=nk123456", 8);
+    
+    LRUCache cache(1000);
     Server svr;
+
+    
+    svr.new_task_queue = [] { 
+        return new ThreadPool(8); 
+    };
 
     svr.Put(R"(/set/(.+))", [&](const Request &req, Response &res) {
         string key = req.matches[1];
         string value = req.body;
 
-        if (db.set(key, value)) {
+        auto db = db_pool.get_connection();
+        if (!db) {
+            res.status = 503;
+            res.set_content("Error in connection pool\n", "text/plain");
+            return;
+        }
+
+        if (db->set(key, value)) {
             cache.put(key, value);
             res.set_content("Stored successfully\n", "text/plain");
         } else {
             res.status = 500;
             res.set_content("Failed to store value\n", "text/plain");
         }
+        db_pool.return_connection(db);
     });
 
     svr.Get(R"(/get/(.+))", [&](const Request &req, Response &res) {
@@ -39,7 +49,16 @@ int main() {
             return;
         }
 
-        string value = db.get(key);
+        auto db = db_pool.get_connection();
+        if (!db) {
+            res.status = 503;
+            res.set_content("Error\n", "text/plain");
+            return;
+        }
+
+        string value = db->get(key);
+        db_pool.return_connection(db);
+
         if (value.empty()) {
             res.status = 404;
             res.set_content("Key not found\n", "text/plain");
@@ -52,17 +71,31 @@ int main() {
     svr.Delete(R"(/delete/(.+))", [&](const Request &req, Response &res) {
         string key = req.matches[1];
 
-        if (db.remove(key)) {
+        auto db = db_pool.get_connection();
+        if (!db) {
+            res.status = 503;
+            res.set_content("Service unavailable - database pool exhausted\n", "text/plain");
+            return;
+        }
+
+        if (db->remove(key)) {
             cache.remove(key);
             res.set_content("Deleted successfully\n", "text/plain");
         } else {
             res.status = 404;
             res.set_content("Key not found\n", "text/plain");
         }
+        db_pool.return_connection(db);
     });
 
-    cout << "Server running at http://localhost:8080\n";
+
+    svr.Get("/status", [&](const Request &req, Response &res) {
+        res.set_content("Available connections: " + 
+                       to_string(db_pool.available_connections()) + "\n", "text/plain");
+    });
+
+    cout << "Server running at http://localhost:8080 \n";
     svr.listen("localhost", 8080);
 
-    db.close();
+    return 0;
 }

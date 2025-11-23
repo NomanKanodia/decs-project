@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
+#include <mutex>
 #include <libpq-fe.h>
+
 using namespace std;
 
 class Database {
@@ -18,4 +20,5 @@ public:
 private:
     PGconn* conn;
     string connectionInfo;
+    mutex db_mtx;
 };

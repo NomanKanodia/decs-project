@@ -1,0 +1,145 @@
+Results for get popular(Cache Heavy)
+
+Threads: 2, Duration: 30s
+Total Requests: 142285
+Duration: 30 seconds
+Average Throughput: 4742.83 req/sec
+Average Response Time: 0.419594 ms
+CPU utilization: 112.2%
+
+Threads: 4, Duration: 30s
+Total Requests: 256709
+Duration: 30 seconds
+Average Throughput: 8556.97 req/sec
+Average Response Time: 0.465255 ms
+CPU utilization: 182.4%
+
+Threads: 6, Duration: 30s
+Total Requests: 335600
+Duration: 30 seconds
+Average Throughput: 11186.7 req/sec
+Average Response Time: 0.533978 ms
+CPU utilizaiton: 210.8%
+
+Threads: 8, Duration: 30s
+Total Requests: 349880
+Duration: 30 seconds
+Average Throughput: 11662.7 req/sec
+Average Response Time: 0.684265 ms
+CPU utilization: 213.8%
+
+Threads: 10, Duration: 30s
+Total Requests: 355908
+Duration: 30 seconds
+Average Throughput: 11863.6 req/sec
+Average Response Time: 0.842974 ms
+CPU utilization: 217.2%
+
+Threads: 12, Duration: 30s
+Total Requests: 356478
+Duration: 30 seconds
+Average Throughput: 11882.6 req/sec
+Average Response Time: 1.01357 ms
+CPU utilization: 216%
+
+Threads: 14, Duration: 30s
+Total Requests: 362342
+Duration: 30 seconds
+Average Throughput: 12078.1 req/sec
+Average Response Time: 1.16764 ms
+CPU utilization: 218%
+
+Threads: 16, Duration: 30s
+Total Requests: 354747
+Duration: 30 seconds
+Average Throughput: 11824.9 req/sec
+Average Response Time: 1.35907 ms
+CPU utilization: 212.2%
+
+Threads: 18, Duration: 30s
+Total Requests: 359210
+Duration: 30 seconds
+Average Throughput: 11973.7 req/sec
+Average Response Time: 1.52227 ms
+CPU utilization: 215.2%
+
+Threads: 20, Duration: 30s
+Total Requests: 362366
+Duration: 30 seconds
+Average Throughput: 12078.9 req/sec
+Average Response Time: 1.66922 ms
+CPU utilization: 215.2%
+
+
+
+Results for put all(DB Heavy)
+
+Threads: 2, Duration: 30s
+Total Requests: 19118
+Duration: 30 seconds
+Average Throughput: 637.267 req/sec
+Average Response Time: 3.13531 ms
+CPU utilization: 29%
+
+Threads: 4, Duration: 30s
+Total Requests: 37086
+Duration: 30 seconds
+Average Throughput: 1236.2 req/sec
+Average Response Time: 3.23282 ms
+CPU utilization: 57.5%
+
+Threads: 6, Duration: 30s
+Total Requests: 52778
+Duration: 30 seconds
+Average Throughput: 1759.27 req/sec
+Average Response Time: 3.40759 ms
+CPU utilization: 88%
+
+Threads: 8, Duration: 30s
+Total Requests: 70872
+Duration: 30 seconds
+Average Throughput: 2362.4 req/sec
+Average Response Time: 3.38353 ms
+CPU utilization: 106%
+
+Threads: 10, Duration: 30s
+Total Requests: 71606
+Duration: 30 seconds
+Average Throughput: 2386.87 req/sec
+Average Response Time: 4.18667 ms
+CPU utilization: 108%
+
+Threads: 12, Duration: 30s
+Total Requests: 71385
+Duration: 30 seconds
+Average Throughput: 2379.5 req/sec
+Average Response Time: 5.04026 ms
+CPU utilization: 100%
+
+Threads: 14, Duration: 30s
+Total Requests: 71406
+Duration: 30 seconds
+Average Throughput: 2380.2 req/sec
+Average Response Time: 5.87912 ms
+CPU utilization: 102%
+
+Threads: 16, Duration: 30s
+Total Requests: 72161
+Duration: 30 seconds
+Average Throughput: 2405.37 req/sec
+Average Response Time: 6.64937 ms
+CPU utilization: 99%
+
+Threads: 18, Duration: 30s
+Total Requests: 72062
+Duration: 30 seconds
+Average Throughput: 2402.07 req/sec
+Average Response Time: 7.49132 ms
+CPU utilization: 100.2%
+
+Threads: 20, Duration: 30s
+Total Requests: 72538
+Duration: 30 seconds
+Average Throughput: 2417.93 req/sec
+Average Response Time: 8.2693 ms
+CPU utilization: 100.2%
